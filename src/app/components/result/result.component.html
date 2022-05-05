@@ -1,0 +1,98 @@
+<div class="main">
+  <h1>Keresés eredménye</h1>
+  <div *ngIf="tmdbSearchResults$ | async as det">
+    <div *ngIf="det.total_results !== 0; else noresult">
+      <div class="container">
+        <div *ngFor="let result of det?.results">
+          <div>{{ result.media_type | json }}</div>
+          <div *ngIf="result.media_type != 'person'">
+            <div *ngIf="result.media_type == 'movie'">
+              <div [routerLink]="['/movie', result.id]" class="movie_card">
+                <img
+                  src="https://image.tmdb.org/t/p/w300{{
+                    result.backdrop_path
+                  }}"
+                  class="image"
+                />
+                <div class="middle">
+                  <div class="title">{{ result.title }}</div>
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="result.media_type == 'tv'">
+              <div [routerLink]="['/tv', result.id]" class="movie_card">
+                <img
+                  src="https://image.tmdb.org/t/p/w300{{
+                    result.backdrop_path
+                  }}"
+                  class="image"
+                />
+                <div class="middle">
+                  <div class="title">{{ result.name }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <ng-template #noresult>Nincs eredmény</ng-template>
+  </div>
+
+  <!--  <div class="container">
+    <div
+      *ngFor="let popmovie of tmdbSearchResult"
+      [routerLink]="['/movie', popmovie.id]"
+      class="movie_card"
+    >
+      <img
+        src="https://image.tmdb.org/t/p/w300{{ popmovie.backdrop_path }}"
+        class="image"
+      />
+      <div class="middle">
+        <div class="title">{{ popmovie.title }}</div>
+      </div>
+    </div>
+  </div>
+
+  <h1>Felkapott sorozatok</h1>
+  <div class="container">
+    <div
+      *ngFor="let popmovie of trendingTV"
+      [routerLink]="['/tv', popmovie.id]"
+      class="movie_card"
+    >
+      <img
+        src="https://image.tmdb.org/t/p/w300{{ popmovie.backdrop_path }}"
+        class="image"
+      />
+      <div class="middle">
+        <div class="title">{{ popmovie.name }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <div
+    *ngFor="
+      let movie of movies
+        | paginate
+          : {
+              itemsPerPage: 20,
+              currentPage: page,
+              totalItems: total_results
+            }
+    "
+    [routerLink]="['/items', movie.id]"
+    class="movie-card"
+    style="background-image:url(https://image.tmdb.org/t/p/w300{{
+      movie.poster_path
+    }})"
+  ></div>
+    <pagination-controls
+    class="my-pagination"
+    [responsive]="true"
+    (pageChange)="getPage((page = $event))"
+  ></pagination-controls>
+--></div>

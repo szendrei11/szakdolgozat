@@ -1,0 +1,112 @@
+<ng-http-loader></ng-http-loader>
+<!--<app-layout>-->
+<div>
+  <mat-toolbar color="primary">
+    <mat-toolbar-row>
+      <button
+        mat-icon-button
+        (click)="sidenav.toggle()"
+        fxShow="true"
+        fxHide.gt-sm="true"
+      >
+        <mat-icon>menu</mat-icon>
+      </button>
+      <div fxShow="true" fxHide.lt-md="true">
+        <a [routerLink]="['/home']" mat-button>
+          <mat-icon>home</mat-icon>
+          FŐOLDAL
+        </a>
+        <button mat-button [matMenuTriggerFor]="menu">
+          <mat-icon> local_movies</mat-icon> FILMEK
+        </button>
+        <mat-menu #menu="matMenu" class="custom">
+          <a [routerLink]="['/movies']" mat-menu-item>NÉPSZERŰEK</a>
+          <a [routerLink]="['/home']" mat-menu-item> LEGJOBBRA ÉRTÉKELT </a>
+        </mat-menu>
+        <button mat-button [matMenuTriggerFor]="menu2">
+          <mat-icon> tv</mat-icon> SOROZATOK
+        </button>
+        <mat-menu #menu2="matMenu" class="custom">
+          <a [routerLink]="['/series']" mat-menu-item>NÉPSZERŰEK</a>
+          <a [routerLink]="['/home']" mat-menu-item>LEGJOBBRA ÉRTÉKELT</a>
+        </mat-menu>
+      </div>
+
+      <span class="example-spacer"></span>
+
+      <input
+        class="search-input"
+        type="text"
+        name="example"
+        placeholder="Film, sorozat keresése"
+        [formControl]="name"
+      />
+      <button
+        [disabled]="!name.value"
+        class="search-button"
+        [routerLink]="['/result', name.value]"
+      >
+        <i class="material-icons"> search </i>
+      </button>
+
+      <div fxShow="true" fxHide.lt-md="true">
+        <button
+          *ngIf="!this.authService.isLoggedIn"
+          routerLinkActive="active"
+          routerLink="/signin"
+          class="login"
+          mat-button
+        >
+          <mat-icon>account_box</mat-icon>
+          BEJELENTKEZÉS
+        </button>
+        <button
+          *ngIf="this.authService.isLoggedIn"
+          routerLinkActive="active"
+          [routerLink]="['user-profile/', profile()]"
+          class="login"
+          mat-button
+        >
+          <mat-icon>account_box</mat-icon>
+          PROFIL
+        </button>
+        <button
+          (click)="logout()"
+          *ngIf="this.authService.isLoggedIn"
+          class="login"
+          mat-button
+        >
+          <mat-icon>account_box</mat-icon>
+          Kijelentkezés
+        </button>
+      </div>
+    </mat-toolbar-row>
+  </mat-toolbar>
+
+  <mat-sidenav-container fxFlexFill>
+    <mat-sidenav
+      #sidenav
+      style="background-color: #151a34; width: 200px; min-width: 200px"
+    >
+      <mat-nav-list style="width: 100%">
+        <mat-list-item [matMenuTriggerFor]="menu"> MOVIES </mat-list-item>
+        <mat-menu #menu="matMenu">
+          <button mat-list-item routerLink="['/popular']">NÉPSZERŰEK</button>
+          <a href="#" mat-list-item>LEGJOBBRA ÉRTÉKELT</a>
+        </mat-menu>
+        <mat-list-item [matMenuTriggerFor]="menu2"> SOROZATOK </mat-list-item>
+        <mat-menu #menu2="matMenu">
+          <a href="#" mat-list-item>NÉPSZERŰEK</a>
+          <a href="#" mat-list-item>LEGJOBBRA ÉRTÉKELT</a>
+        </mat-menu>
+        <a href="#" mat-list-item> BEJELENTKEZÉS </a>
+        <a (click)="sidenav.toggle()" mat-list-item> X </a>
+      </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content class="bg-pr">
+      <router-outlet> </router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>
+<app-footer></app-footer>
+<!--</app-layout>-->

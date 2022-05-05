@@ -1,0 +1,47 @@
+.example-icon {
+  padding: 0 14px;
+}
+
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+.bg-pr {
+  background: #151a34;
+}
+::ng-deep .custom {
+  background-color: #0c0f21 !important;
+}
+.login {
+  background-color: #151a34;
+  margin-left: 5px;
+}
+::ng-deep .mat-sidenav-content {
+  min-height: 100vh !important;
+}
+::placeholder {
+  color: white;
+  opacity: 1; /* Firefox */
+}
+:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  color: white;
+}
+
+::-ms-input-placeholder {
+  /* Microsoft Edge */
+  color: white;
+}
+.search-input {
+  height: 30px;
+  width: 450px;
+  background-color: #151a34 !important;
+  color: white;
+  border: 1px solid none;
+}
+.search-button {
+  height: 35px;
+}
+.search-button:hover {
+  cursor: pointer;
+}

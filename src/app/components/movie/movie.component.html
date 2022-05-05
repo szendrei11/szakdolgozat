@@ -1,0 +1,155 @@
+<div class="container">
+  <ng-container
+    *ngIf="{
+      tmdbDetails: tmdbdd$ | async,
+      omdbDetails: omdbdd$ | async
+    } as details"
+  >
+    <div class="movie_card">
+      <div class="info_section">
+        <div class="movie_header">
+          <div *ngIf="details.tmdbDetails?.poster_path !== null">
+            <img
+              class="locandina"
+              src="https://image.tmdb.org/t/p/original{{
+                details.tmdbDetails?.poster_path
+              }}"
+            />
+          </div>
+
+          <h1>{{ details.tmdbDetails?.title }}</h1>
+          <div *ngIf="details.tmdbDetails?.release_date; else omdb_released">
+            <h4>
+              {{ details.tmdbDetails?.release_date | date: "yyyy" }}
+            </h4>
+          </div>
+          <ng-template #omdb_released
+            ><h4>
+              <!-- {{ omdbDetails.Released | date: "yyyy" }}
+              {{ omdbDetails.Director }}-->
+            </h4></ng-template
+          >
+
+          <p *ngFor="let genre of details.tmdbDetails?.genres" class="minutes">
+            {{ genre.name }}
+          </p>
+        </div>
+        <!--<div class="movie_desc">
+          <div *ngIf="details.tmdbDetails?.overview; else omdb_overview">
+            <p class="text">
+              {{ details.tmdbDetails?.overview }}
+            </p>
+          </div>
+          <ng-template #omdb_overview>
+            <p title="Nem található magyar leírás" class="text">
+              {{ details.omdbDetails?.Plot }}
+            </p></ng-template
+          >
+        </div>
+      -->
+        <div class="movie_social">
+          <div *ngIf="details.omdbDetails?.Ratings !== []">
+            <ul>
+              <li *ngFor="let rating of details.omdbDetails?.Ratings">
+                {{ rating.Source }} - {{ rating.Value }}
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="movie_social">
+          <ul>
+            <li><i class="material-icons">share</i></li>
+            <li><i class="material-icons"></i></li>
+            <li><i class="material-icons">chat_bubble</i></li>
+          </ul>
+        </div>
+      </div>
+      <ng-container *ngIf="details.tmdbDetails?.backdrop_path != null"
+        ><div
+          class="blur_back"
+          [ngStyle]="{
+            background:
+              'url(' +
+              getBackdropImage(details.tmdbDetails?.backdrop_path) +
+              ')'
+          }"
+        ></div
+      ></ng-container>
+    </div>
+
+    <mat-tab-group mat-stretch-tabs class="demo-tab-group">
+      <mat-tab label="További adatok">
+        <ng-template matTabContent>
+          <div class="profil-to-center">
+            <ng-container
+              *ngFor="
+                let c of details.tmdbDetails?.credits?.cast;
+                let i = index
+              "
+            >
+              <div
+                *ngIf="i < 6"
+                class="profile-card"
+                [ngStyle]="{
+                  background: 'url(' + getProfilImage(c.profile_path) + ');'
+                }"
+              >
+                <div>{{ c.name }} -- {{ c.character }}</div>
+              </div>
+            </ng-container>
+          </div>
+          <div *ngIf="details.tmdbDetails?.overview; else omdb_overview">
+            <p class="text">
+              Leírás: {{ details.tmdbDetails?.popularity }} ---
+              {{ details.tmdbDetails?.overview }}
+            </p>
+          </div>
+          <ng-template #omdb_overview>
+            <p title="Nem található magyar leírás" class="text">
+              Leírás: {{ details.omdbDetails?.Plot }}
+            </p></ng-template
+          >
+          <p>Eredeti cím: {{ details.tmdbDetails?.original_title }}</p>
+          <p>Eredeti Nyelv: {{ details.tmdbDetails?.original_language }}</p>
+          <p>Időtartam: {{ details.tmdbDetails?.runtime }}</p>
+          <p>Status: {{ details.tmdbDetails?.status }}</p>
+        </ng-template>
+        <!-- <div class="demo-tab-content">
+          <p>{{ tmdbDetails | json }}</p>
+          <p>{{ omdbDetails | json }}</p>
+        </div>-->
+      </mat-tab>
+
+      <mat-tab label="Média">
+        <ng-template matTabContent>
+          <!--     <ng-container *ngIf="details.tmdbDetails?.videos?.results !== []">
+            <h1>Előzetesek</h1>
+            <div *ngFor="let res of details.tmdbDetails?.videos?.results">
+              {{ res.name }} -- {{ res.site }} -- {{ res.type }}
+            </div></ng-container
+          >
+
+          <h1>Háttérképek</h1>
+         <div *ngFor="let imgbd of details.tmdbDetails?.images?.backdrops">
+            {{ imgbd.file_path }} -- {{ imgbd.height }} --
+            {{ imgbd.width }}
+          </div>-->
+        </ng-template>
+      </mat-tab>
+
+      <mat-tab label="Stáblista">
+        <ng-template matTabContent>
+          <div *ngFor="let c of details.tmdbDetails?.credits?.cast">
+            <p>
+              {{ c.name }} -- {{ c.profile_path }} -- {{ c.character }} --
+              {{ c.order }}
+            </p>
+          </div>
+          <div *ngFor="let cr of details.tmdbDetails?.credits?.crew">
+            <p>{{ cr.name }} -- {{ cr.job }} -- {{ cr.profile_path }}</p>
+          </div>
+        </ng-template>
+      </mat-tab>
+    </mat-tab-group>
+  </ng-container>
+</div>

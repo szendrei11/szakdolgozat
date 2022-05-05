@@ -1,0 +1,26 @@
+/* You can add global styles to this file, and also import other style files
+  overflow: hidden;
+  max-width: 100%;
+  max-height: 100%;*/
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+.mat-toolbar.mat-primary {
+  background: #0c0f21;
+  color: #fff;
+}
+.mat-primary {
+  background: #0c0f21;
+  color: #fff;
+}
+.ngx-pagination {
+  display: flex;
+  justify-content: center;
+}

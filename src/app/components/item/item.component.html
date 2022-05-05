@@ -1,0 +1,204 @@
+<div class="container">
+  <ng-container
+    *ngIf="{
+      omdbDetails: omdbdd$ | async,
+      tmdbDetails: tmdbdd$ | async
+    } as details"
+  >
+    <div class="movie_card">
+      <div class="info_section">
+        <div class="movie_header">
+          <div *ngIf="details.tmdbDetails?.poster_path !== null">
+            <img
+              class="locandina"
+              src="https://image.tmdb.org/t/p/original{{
+                details.tmdbDetails?.poster_path
+              }}"
+            />
+          </div>
+
+          <h1 style="width: 70%">
+            {{ details.tmdbDetails?.title }}
+          </h1>
+          <div *ngIf="details.tmdbDetails?.release_date; else omdb_released">
+            <h4>
+              {{ details.tmdbDetails?.release_date | date: "yyyy" }}
+            </h4>
+          </div>
+          <ng-template #omdb_released><h4>N/A</h4></ng-template>
+
+          <p *ngFor="let genre of details.tmdbDetails?.genres" class="minutes">
+            {{ genre.name }}
+          </p>
+        </div>
+
+        <div class="movie_social">
+          <ul>
+            <li><i class="material-icons">share</i></li>
+            <li><i class="material-icons"></i></li>
+            <li><i class="material-icons">chat_bubble</i></li>
+          </ul>
+        </div>
+      </div>
+      <ng-container *ngIf="details.tmdbDetails?.backdrop_path != null"
+        ><div
+          class="blur_back"
+          [ngStyle]="{
+            background:
+              'url(' +
+              getBackdropImage(details.tmdbDetails?.backdrop_path, 'w780') +
+              ')'
+          }"
+        ></div
+      ></ng-container>
+    </div>
+
+    <mat-tab-group mat-stretch-tabs class="demo-tab-group">
+      <mat-tab label="További adatok">
+        <h1>Főbb szereplők</h1>
+        <div class="wrapper">
+          <ng-container
+            *ngFor="let c of details.tmdbDetails?.credits?.cast; let i = index"
+            ><ng-container *ngIf="i < 6">
+              <div
+                *ngIf="c.profile_path; else noProfileImage"
+                class="profile-card"
+                [ngStyle]="{
+                  background: 'url(' + getProfilImage(c.profile_path) + ');'
+                }"
+              >
+                <div class="text-block">{{ c.name }} ({{ c.character }})</div>
+              </div>
+              <ng-template #noProfileImage>
+                <div
+                  class="profile-card"
+                  [ngStyle]="{
+                    'background-image': 'url(./assets/default_profile.png);'
+                  }"
+                >
+                  <div class="text-block">
+                    {{ c.name }} <br />({{ c.character }})
+                  </div>
+                </div>
+              </ng-template>
+            </ng-container>
+          </ng-container>
+
+          <h1 style="width: 100%">Értékelések</h1>
+          <div class="card">
+            <h3 class="card-title">Felhasználói értékelés</h3>
+            <p class="card-content">pontszám</p>
+          </div>
+
+          <div
+            title="{{ rating.votes }} szavazat"
+            *ngFor="let rating of details.omdbDetails?.ratings"
+            class="card"
+          >
+            <h3 class="card-title">{{ rating.source | uppercase }}</h3>
+            <p class="card-content">
+              {{ rating.value }}
+            </p>
+            <ng-container *ngIf="rating.url"> -- {{ rating.url }}</ng-container>
+          </div>
+
+          <h1 style="width: 100%">Egyéb</h1>
+
+          <div class="card1">
+            <h3 class="card-title">Leírás</h3>
+            <div *ngIf="details.tmdbDetails?.overview; else omdb_overview">
+              <p class="card-content">
+                {{ details.tmdbDetails?.overview }}
+              </p>
+            </div>
+            <ng-template #omdb_overview>
+              <p title="Nem található magyar leírás" class="card-content">
+                {{ details.omdbDetails?.description }}
+              </p></ng-template
+            >
+          </div>
+          <div class="card">
+            <h3 class="card-title">Játékidő</h3>
+            <p class="card-content">{{ details.tmdbDetails?.runtime }} perc</p>
+          </div>
+          <div class="card">
+            <h3 class="card-title">Angol cím</h3>
+            <p class="card-content">{{ details.omdbDetails?.title }}</p>
+          </div>
+        </div>
+      </mat-tab>
+
+      <mat-tab label="Média">
+        <ng-container *ngIf="trailers.length != 0; else notrailers">
+          <h1>Előzetesek</h1>
+          <gallery id="trailerGalleryId"></gallery
+        ></ng-container>
+        <ng-template #notrailers><h1>Nincs előzetes</h1></ng-template>
+        <h1>Háttérképek</h1>
+        <div class="grid">
+          <div
+            class="grid-item"
+            *ngFor="let image of images; let i = index"
+            [lightbox]="i"
+            [gallery]="galleryId"
+          >
+            <img [src]="image.data.thumb" />
+          </div>
+        </div>
+      </mat-tab>
+
+      <mat-tab label="Stáblista">
+        <h1>Színészek</h1>
+        <div class="wrapper">
+          <ng-container *ngFor="let c of details.tmdbDetails?.credits?.cast">
+            <div
+              *ngIf="c.profile_path; else noProfileImage"
+              class="profile-card"
+              [ngStyle]="{
+                background: 'url(' + getImage(c.profile_path, 'w185') + ');'
+              }"
+            >
+              <div class="text-block">
+                {{ c.name }} <br />({{ c.character }})
+              </div>
+            </div>
+            <ng-template #noProfileImage>
+              <div
+                class="profile-card"
+                [ngStyle]="{
+                  'background-image': 'url(./assets/default_profile.png);'
+                }"
+              >
+                <div class="text-block">
+                  {{ c.name }} <br />({{ c.character }})
+                </div>
+              </div>
+            </ng-template>
+          </ng-container>
+          <h1 style="width: 100%">Stáb</h1>
+          <ng-container *ngFor="let c of details.tmdbDetails?.credits?.crew">
+            <div
+              *ngIf="c.profile_path; else noProfileImage"
+              class="profile-card"
+              [ngStyle]="{
+                background: 'url(' + getProfilImage(c.profile_path) + ');'
+              }"
+            >
+              <div class="text-block">{{ c.name }} <br />({{ c.job }})</div>
+            </div>
+            <ng-template #noProfileImage>
+              <div
+                class="profile-card"
+                [ngStyle]="{
+                  'background-image': 'url(./assets/default_profile.png);'
+                }"
+              >
+                <div class="text-block">{{ c.name }} <br />({{ c.job }})</div>
+              </div>
+            </ng-template>
+          </ng-container>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </ng-container>
+</div>

@@ -1,0 +1,71 @@
+<!--<mat-card
+  style="
+    width: 300px;
+    background: url(https://image.tmdb.org/t/p/w300/zBG5Mg29NH9xxpWMMG7BIvKwYhL.jpg);
+    height: 169px;
+    padding: 0px;
+  "
+>
+  <div class="middle">
+    <div class="title">aaa</div>
+  </div>
+</mat-card>-->
+<div class="main">
+  <h1>Felkapott filmek</h1>
+
+  <div class="container">
+    <div
+      *ngFor="let popmovie of trendingMovies"
+      [routerLink]="['/movie', popmovie.id]"
+      class="movie_card"
+    >
+      <img
+        src="https://image.tmdb.org/t/p/w300{{ popmovie.backdrop_path }}"
+        class="image"
+      />
+      <div class="middle">
+        <div class="title">{{ popmovie.title }}</div>
+      </div>
+    </div>
+  </div>
+
+  <h1>Felkapott sorozatok</h1>
+  <div class="container">
+    <div
+      *ngFor="let popmovie of trendingTV"
+      [routerLink]="['/tv', popmovie.id]"
+      class="movie_card"
+    >
+      <img
+        src="https://image.tmdb.org/t/p/w300{{ popmovie.backdrop_path }}"
+        class="image"
+      />
+      <div class="middle">
+        <div class="title">{{ popmovie.name }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--
+  <div
+    *ngFor="
+      let movie of movies
+        | paginate
+          : {
+              itemsPerPage: 20,
+              currentPage: page,
+              totalItems: total_results
+            }
+    "
+    [routerLink]="['/items', movie.id]"
+    class="movie-card"
+    style="background-image:url(https://image.tmdb.org/t/p/w300{{
+      movie.poster_path
+    }})"
+  ></div>
+    <pagination-controls
+    class="my-pagination"
+    [responsive]="true"
+    (pageChange)="getPage((page = $event))"
+  ></pagination-controls>
+-->

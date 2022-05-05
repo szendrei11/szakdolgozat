@@ -1,0 +1,76 @@
+<section
+  style="
+    height: 50vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  "
+>
+  <mat-card class="bg-a">
+    <mat-card-header style="padding: 20px">
+      <mat-card-title>Bejelentkezés</mat-card-title>
+    </mat-card-header>
+    <form [formGroup]="loginForm" (ngSubmit)="loginUser()">
+      <mat-form-field style="width: 400px !important">
+        <mat-label>Email</mat-label>
+        <input
+          formControlName="email"
+          type="text"
+          id="email"
+          matInput
+          required
+        />
+        <mat-error
+          *ngIf="
+              !loginForm.get('email')?.errors?.['required'] &&
+              loginForm.get('email')?.errors?.['pattern']
+            "
+        >
+          Kérem érvényes email címet adjon meg.
+        </mat-error>
+        <mat-error
+          *ngIf="
+              loginForm.get('email')?.invalid &&
+              (loginForm.get('email')?.dirty ||
+                loginForm.get('email')?.touched) &&
+              loginForm.get('email')?.errors?.['required']
+            "
+        >
+          Email cím mező kötelező!
+        </mat-error>
+      </mat-form-field>
+      <br />
+      <mat-form-field style="width: 400px !important">
+        <mat-label>Jelszó</mat-label>
+        <input type="password" formControlName="password" matInput />
+        <mat-error *ngIf="!loginForm.get('password')?.errors?.['required']">
+          A jelszónak legalább 8 karakter hosszúnak kell lennie és tartalmaznia
+          kell kis- és nagybetűt, számot és speciális karaktert.
+        </mat-error>
+        <mat-error
+          *ngIf="
+              loginForm.get('password')?.invalid &&
+              (loginForm.get('password')?.dirty ||
+                loginForm.get('password')?.touched) &&
+              loginForm.get('password')?.errors?.['required']
+            "
+        >
+          Jelszó mező kötelező!
+        </mat-error>
+      </mat-form-field>
+      <br />
+
+      <button
+        [disabled]="!loginForm.valid"
+        mat-raised-button
+        color="primary"
+        mat-button
+      >
+        Bejelentkezés
+      </button>
+      <button routerLink="/signup" mat-raised-button color="primary">
+        Regisztráció
+      </button>
+    </form>
+  </mat-card>
+</section>

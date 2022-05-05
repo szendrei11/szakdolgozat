@@ -1,0 +1,61 @@
+<!--<div class="container">
+  <div
+    class="movie-card"
+    style="background-image: url(https://image.tmdb.org/t/p/w300{{
+      movie.poster_path
+    }}); "
+    *ngFor="
+      let movie of movies
+        | paginate
+          : { itemsPerPage: 20, currentPage: page, totalItems: total_results }
+    "
+  >
+    <div class="title">{{ movie.title }}</div>
+
+    <div class="movie-info">
+      {{ movie.release_date }}
+    </div>
+  </div>
+</div>
+
+<pagination-controls
+  class="custom-pagi"
+  [responsive]="true"
+  (pageChange)="getPage((page = $event))"
+></pagination-controls>
+-->
+<div class="container">
+  <ng-container
+    *ngFor="
+      let movie of movies
+        | paginate
+          : {
+              itemsPerPage: 20,
+              currentPage: page,
+              totalItems: 1000
+            }
+    "
+  >
+    <div
+      *ngIf="movie.poster_path; else tempa"
+      [routerLink]="['/movie', movie.id]"
+      class="movie_card"
+      style="background-image: url(https://image.tmdb.org/t/p/w300{{
+        movie.poster_path
+      }});"
+    ></div>
+    <ng-template #tempa>
+      <div
+        [routerLink]="['/movie', movie.id]"
+        class="movie_card"
+        style="background-image: url(assets/default.png)"
+      ></div
+    ></ng-template>
+  </ng-container>
+</div>
+
+<pagination-controls
+  class="my-pagination"
+  [responsive]="true"
+  (pageChange)="getPage((page = $event))"
+></pagination-controls>
